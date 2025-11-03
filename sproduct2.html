@@ -56,97 +56,81 @@
 
         </div>
 
-        <div class="single-pro-details">
-            <h6>Home / Jackets</h6>
-            <h4 id="productName">Bouclé jacket</h4>
-            <h2 id="productPrice" data-price="2999">Rs. 2,999</h2>
-            <select name="productSize" id="productSize">
-                <option value="">Select Size</option>
-                <option value="XXL">XXL</option>
-                <option value="XL">XL</option>
-                <option value="L">L</option>
-                <option value="M">M</option>
-                <option value="S">S</option>
-            </select>
+        <section id="product1" class="section-p1">
+        <h2>Featured Products</h2>
+        <p>Summer Collection New Modern Design</p>
+        <div class="pro-container">
+            <div 
+                class="pro" 
+                data-product-id="p11" 
+                data-name="Textured dress" 
+                data-price="1949" 
+                onclick="window.location.href='sproduct.html'"
+            >
+                <img src="img/p11.png" alt="Teddy sweatshirt" class="product-image">
+                <div class="des">
+                    <span>H & M</span>
+                    <h5>Textured dress</h5>
+                    <div class="star">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <h4>Rs. 1,949</h4>
+                </div>
+                <a href="#" class="cart" onclick="addToCart({id: 'p11', name: 'Textured dress', price: 1949, image: 'img/p11.png'}); return false;">
+                    <i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i>
+                </a>
+            </div>
 
-            <input type="number" value="1" id="productQuantity" min="1">
-            <button class="normal" onclick="addToCartFromDetail('p2');">Add To Cart</button>
-            <h4>Product Details</h4>
-            <span>Oversized jacket in soft teddy with narrow binding around the edges. Stand collar and placket with press-studs. Flap chest pocket with a press-stud, dropped shoulders and long sleeves.</span>
-        </div>
-     </section>
+            <div 
+                class="pro" 
+                data-product-id="p22" 
+                data-name="Double Layer Printed Mesh Skirt" 
+                data-price="1254" 
+                onclick="window.location.href='sproduct2.html'"
+            >
+                <img src="img/p22.png" alt="Double Layer Printed Mesh Skirt" class="product-image">
+                <div class="des">
+                    <span>H & M</span>
+                    <h5>Bouclé jacket</h5>
+                    <div class="star">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <h4>Rs. 1,254</h4>
+                </div>
+                <a href="#" class="cart" onclick="addToCart({id: 'p2', name: 'Double Layer Printed Mesh Skirt', price: 1254, image: 'img/p22.png'}); return false;">
+                    <i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i>
+                </a>
+            </div>
 
-     <section id="product1" class="section-p1">
-        <h2>Featured Products</h2>
-        <p>Summer Collection New Modern Design</p>
-        <div class="pro-container">
-            <div class="pro" data-product-id="p1" data-name="Teddy sweatshirt" data-price="1999">
-                <img src="img/p1.png" alt="">
-                <div class="des">
-                    <span>H & M</span>
-                    <h5>Teddy sweatshirt</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Rs. 1,999</h4>
-                </div>
-                <a href="#" class="cart" onclick="addToCart(this.closest('.pro')); return false;"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
-            </div>
+            <div class="pro" data-product-id="p23" data-name="Rhinestone Denim Straight Skirt" data-price="1716" >
+                <img src="img/p23.png" alt="Rib-knit peplum cardigan" class="product-image">
+                <div class="des">
+                    <span>H & M</span>
+                    <h5>Rhinestone Denim Straight Skirt</h5>
+                    <div class="star">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <h4>Rs. 1,716</h4>
+                </div>
+                <a href="#" class="cart" onclick="addToCart({id: 'p3', name: 'Rhinestone Denim Straight Skirt', price: 1716, image: 'img/p23.png'}); return false;">
+                    <i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i>
+                </a>
+            </div>
 
-            <div class="pro" data-product-id="p2" data-name="Bouclé jacket" data-price="2999">
-                <img src="img/p2.png" alt="">
-                <div class="des">
-                    <span>H & M</span>
-                    <h5>Bouclé jacket</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Rs. 2,999</h4>
-                </div>
-                <a href="#" class="cart" onclick="addToCart(this.closest('.pro')); return false;"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
-            </div>
-
-            <div class="pro" data-product-id="p3" data-name="Rib-knit peplum cardigan" data-price="1699">
-                <img src="img/p3.png" alt="">
-                <div class="des">
-                    <span>H & M</span>
-                    <h5>Rib-knit peplum cardigan</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Rs. 1,699</h4>
-                </div>
-                <a href="#" class="cart" onclick="addToCart(this.closest('.pro')); return false;"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
-            </div>
-
-            <div class="pro" data-product-id="p4" data-name="Draped Shirt" data-price="1999">
-                <img src="img/p4.png" alt="">
-                <div class="des">
-                    <span>H & M</span>
-                    <h5>Draped Shirt</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Rs. 1,999</h4>
-                </div>
-                <a href="#" class="cart" onclick="addToCart(this.closest('.pro')); return false;"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
-            </div>
+            <div class="pro" data-product-id="p14" data-name="Motif-detail jumper" data-price="1529">
+                <img src="img/p14.png" alt="Draped Shirt" class="product-image">
+                <div class="des">
+                    <span>H & M</span>
+                    <h5>Motif-detail jumper</h5>
+                    <div class="star">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <h4>Rs. 1,529</h4>
+                </div>
+                <a href="#" class="cart" onclick="addToCart({id: 'p4', name: 'Motif-detail jumper', price: 1529, image: 'img/p14.png'}); return false;">
+                    <i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i>
+                </a>
+            </div>
 
         </div>
     </section>
