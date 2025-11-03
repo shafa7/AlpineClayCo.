@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Clay Co. - Checkout & Billing</title>
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* General Layout */
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .section-p1 { padding: 40px 80px; }
+        
+        #navbar { display: flex; align-items: center; justify-content: center; }
+        #navbar li { list-style: none; padding: 0 20px; position: relative; }
+        #navbar li a { text-decoration: none; font-size: 16px; font-weight: 600; color: #1a1a1a; transition: 0.3s ease; }
+        #navbar li a:hover, #navbar li a.active { color: #6d7969; }
+        #page-header h2 { font-size: 46px; padding-bottom: 15px; }
+        #mobile, #close { display: none; }
+
+        /* === BILLING FORM STYLES - CENTERING APPLIED HERE === */
+        #checkout-container {
+            /* Changed to center the form element horizontally */
+            display: flex; 
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 40px 80px;
+            background-color: #f4f4f4; /* Set background outside form for contrast */
+        }
+        
+        #billing-form {
+            /* This div contains both sections and will limit the max width */
+            display: flex;
+            justify-content: space-around; /* Distribute space between the two columns */
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1000px; /* Max width for appeal on large screens */
+            width: 100%;
+            background-color: #fff; /* White background for the form area */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 25px;
+            border: 1px solid #e2e9e1; /* Re-added border to individual sections */
+            border-radius: 8px;
+        }
+        .form-section h3 {
+            margin-bottom: 20px;
+            color: #6d7969;
+            border-bottom: 2px solid #e2e9e1;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        /* Checkbox for same address */
+        #same-address-group {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+        #same-address-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        /* Confirmation Button */
+        #confirm-order-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #6d7969;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        #confirm-order-button:hover {
+            background-color: #4a5347;
+        }
+
+        /* Footer and Newsletter styles (for context) */
+        .section-m1 { margin-top: 40px; }
+        /* Responsive adjustments */
+        @media (max-width: 799px) {
+            .section-p1 { padding: 40px 20px; }
+            #header { padding: 10px 30px; }
+            #checkout-container {
+                padding: 40px 20px;
+            }
+            #billing-form {
+                gap: 20px;
+                padding: 15px;
+                box-shadow: none;
+            }
+            .form-section {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <section id="header">
+
+        <a href="#"><img src="logo.png" alt="logo"></a>
+
+
+
+        <div>
+
+            <ul id="navbar">
+
+                <li><a href="index.html">Home</a></li>
+
+                <li><a href="shop.html">Shop</a></li>
+
+                <li><a href="blog.html">Blog</a></li>
+
+                <li><a class="active" href="about.html">About</a></li>
+
+                <li><a href="contact.html">Contact</a></li>
+
+                <li id="lg-bag"><a href="cart.html"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a></li>
+
+                <a href="#" id="close"><i class="fas fa-times"></i></a>
+
+            </ul>
+
+        </div>
+
+
+
+        <div id="mobile">
+
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
+
+            <i id="bar" class="fas fa-outdent"></i>
+
+        </div>
+
+    </section>
+
+    <section id="page-header" class="about-header">
+        <h2>#Checkout</h2>
+        <p>Finalize your order details!</p>
+    </section>
+
+    <section id="checkout-container">
+        <form id="billing-form" onsubmit="confirmOrder(event)">
+            
+            <div class="form-section">
+                <h3>Billing & Shipping Address</h3>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address Line 1 *</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="zip">Zip/Postal Code *</label>
+                    <input type="text" id="zip" name="zip" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country *</label>
+                    <select id="country" name="country" required>
+                        <option value="">Select Country</option>
+                        <option value="IN">India</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                    </select>
+                </div>
+                
+                <div id="same-address-group">
+                    <input type="checkbox" id="sameAsBilling" checked>
+                    <label for="sameAsBilling" style="font-weight: bold;">Payment address same as billing</label>
+                </div>
+            </div>
+
+            <div class="form-section" id="payment-address-section">
+                <h3>Payment Address Details</h3>
+                
+                <div class="form-group">
+                    <label for="p_fullName">Full Name</label>
+                    <input type="text" id="p_fullName" name="p_fullName">
+                </div>
+                <div class="form-group">
+                    <label for="p_address">Address Line 1</label>
+                    <input type="text" id="p_address" name="p_address">
+                </div>
+                <div class="form-group">
+                    <label for="p_city">City</label>
+                    <input type="text" id="p_city" name="p_city">
+                </div>
+                <div class="form-group">
+                    <label for="p_zip">Zip/Postal Code</label>
+                    <input type="text" id="p_zip" name="p_zip">
+                </div>
+                <div class="form-group">
+                    <label for="p_country">Country</label>
+                    <select id="p_country" name="p_country">
+                        <option value="">Select Country</option>
+                        <option value="IN">India</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-top: 30px;">
+                    <label for="paymentMethod" style="font-size: 16px; font-weight: 700;">Payment Method *</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="cod">Cash on Delivery</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+                </div>
+                
+                <button type="submit" id="confirm-order-button">Confirm Order</button>
+
+            </div>
+
+        </form>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletter</h4>
+            <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+        </div>
+        <div class="form">
+            <input type="text" id="newsletter-email" placeholder="Your email address" required>
+            <button id="newsletter-submit">Sign Up</button>
+        </div>  
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img class="loho" src="logo.png" alt="Alpine Clay Co. logo">
+            <h4>Contact</h4>
+            <p><strong>Address:</strong> Mangalore, Karnataka</p>
+            <p><strong>Phone:</strong> (+91) 73 3852 1960 /(+91) 94 8205 5165</p>
+            <p><strong>Hour:</strong> 10:00 - 18:00, Mon - Sat</p>
+            <div class="follow">
+                <h4>Follow us</h4>
+                <div class="icon">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-pinterest-p"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="#">About Us</a>
+            <a href="#">Delivery Information</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="#">Sign In</a>
+            <a href="#">View Cart</a>
+            <a href="#">My Wishlist</a>
+            <a href="#">Track My Order</a>
+            <a href="#">Help</a>
+        </div>
+        <div class="col install">
+            <h4>Install App</h4>
+            <p>From App Store or Google Playstore</p>
+            <div class="row">
+                <img src="img/app.jpg" alt="Download from App Store">
+                <img src="img/play.jpg" alt="Download from Google Play">
+            </div>
+            <p>Secured Payment Gateways</p>
+            <img src="img/pay.png" alt="Payment Gateways">
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025, Alpine Clay Co.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // === BILLING FORM LOGIC ===
+        
+        // Function to toggle payment address fields
+        document.getElementById('sameAsBilling').addEventListener('change', function() {
+            const paymentAddressInputs = document.getElementById('payment-address-section').querySelectorAll('input, select');
+            const isChecked = this.checked;
+
+            paymentAddressInputs.forEach(input => {
+                if (input.id.startsWith('p_') && input.id !== 'paymentMethod') {
+                    input.disabled = isChecked;
+                    input.required = !isChecked;
+                    
+                    if (isChecked) {
+                        input.value = '';
+                    }
+                }
+            });
+        });
+        
+        /**
+         * Confirms the order, shows the "Thank you" popup, and redirects to home.
+         * @param {Event} e 
+         */
+        function confirmOrder(e) {
+            e.preventDefault();
+            
+            // Basic form validation check
+            const form = document.getElementById('billing-form');
+            if (form.checkValidity()) {
+                
+                // 1. CLEAR THE CART
+                localStorage.removeItem('shoppingCart');
+                
+                // 2. SHOW CONFIRMATION POPUP (using the requested alert style)
+                alert("Thank You For Submitting. Your order has been placed!");
+
+                // 3. REDIRECT TO HOME PAGE
+                window.location.href = 'index.html';
+
+            } else {
+                // If form is invalid, rely on browser default error messages to guide user
+                alert("Please fill in all required fields.");
+            }
+        }
+        
+        // === NEWSLETTER LOGIC (copied from previous pages) ===
+        document.getElementById('newsletter-submit').addEventListener('click', function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            if (emailInput.value && emailInput.checkValidity()) {
+                alert("Thank you for submitting");
+                emailInput.value = '';
+            } else {
+                alert("Please enter a valid email address.");
+            }
+        });
+        
+        // Initialize the form state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sameAsBilling').dispatchEvent(new Event('change'));
+        });
+        
+    </script>
+</body>
+</html>

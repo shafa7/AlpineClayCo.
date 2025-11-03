@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Clay Co. - Shopping Cart</title>
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+    /* General Layout */
+    body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+    .section-p1 { padding: 40px 80px; }
+    
+    /* Header & Navigation Styles */
+    #navbar { display: flex; align-items: center; justify-content: center; }
+    #navbar li { list-style: none; padding: 0 20px; position: relative; }
+    #navbar li a { text-decoration: none; font-size: 16px; font-weight: 600; color: #1a1a1a; transition: 0.3s ease; }
+    #navbar li a:hover, #navbar li a.active { color: #6d7969; }
+
+    /* Hide mobile menu elements by default on desktop */
+    #mobile { display: none; } 
+    #close { display: none; }
+    #lg-bag { display: initial; } 
+
+    /* === CART TABLE STYLES (Desktop/Default View) === */
+    #cart {
+        overflow-x: auto;
+        background-color: #fff;
+        padding: 40px 80px;
+    }
+    #cart table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* Keep fixed layout for desktop/large screens */
+        white-space: nowrap;
+    }
+    #cart table img { width: 70px; border-radius: 5px; }
+    #cart table thead { border: 1px solid #e2e9e1; border-left: none; border-right: none; }
+    #cart table thead td {
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 14px;
+        padding: 18px 0;
+        text-align: center;
+    }
+    #cart table tbody tr td {
+        padding: 15px 0;
+        border-bottom: 1px solid #e2e9e1;
+        vertical-align: middle;
+        text-align: center;
+    }
+    
+    /* Desktop Column Widths (Adjusted for better spacing) */
+    #cart table tbody tr td:nth-child(1) { width: 10%; } /* Remove */
+    #cart table tbody tr td:nth-child(2) { width: 15%; } /* Image */
+    #cart table tbody tr td:nth-child(3) { width: 30%; text-align: left; padding-left: 10px; } /* Product: Give max space, left-aligned */
+    #cart table tbody tr td:nth-child(4) { width: 15%; } /* Price */
+    #cart table tbody tr td:nth-child(5) { width: 15%; } /* Quantity */
+    #cart table tbody tr td:nth-child(6) { width: 15%; } /* Subtotal */
+
+    #cart table tbody td:nth-child(5) input { width: 50px; padding: 10px 5px; text-align: center; border: 1px solid #ccc; }
+    #cart table tbody td:nth-child(1) i { color: #800000; cursor: pointer; font-size: 18px; }
+    
+    /* Cart Totals & Coupon */
+    #cart-add { display: flex; flex-wrap: wrap; justify-content: space-between; padding: 40px 80px; }
+    #coupon, #subtotal { width: 48%; border: 1px solid #e2e9e1; padding: 30px; background-color: #fff; }
+    #subtotal table td:nth-child(1) { text-align: left; }
+    #subtotal table tr:last-child td { font-size: 16px; font-weight: bold; }
+
+    #cart-add #coupon {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+    /* ==================================================== */
+    /* === LANDSCAPE/TABLET FIX (799px < width <= 1024px) === */
+    /* ==================================================== */
+    @media (max-width: 1024px) and (min-width: 799px) {
+        .section-p1 { padding: 40px; }
+        #header { padding: 10px 40px; }
+        
+        /* Allow the table to stretch/scroll if necessary, but reduce widths slightly */
+        #cart { overflow-x: auto; }
+        #cart table { min-width: 850px; table-layout: auto; } /* Min width to prevent overlap */
+
+        /* Allow Product name to wrap to prevent text squishing */
+        #cart table tbody tr td:nth-child(3) { 
+            white-space: normal;
+            word-break: break-word; 
+            width: 30% !important;
+        }
+        
+        /* Ensure price/qty/subtotal columns are still small */
+        #cart table tbody tr td:nth-child(4), 
+        #cart table tbody tr td:nth-child(5), 
+        #cart table tbody tr td:nth-child(6) {
+             width: 15% !important;
+        }
+        
+        #cart-add { padding: 40px; }
+        #coupon, #subtotal { width: 49%; padding: 20px; }
+    }
+
+
+    /* ===================================== */
+    /* === MOBILE FIXES (Max 799px) === */
+    /* ===================================== */
+    @media (max-width: 799px) {
+        .section-p1 { padding: 20px; }
+        /* Header/Mobile Nav Fix */
+        #header { padding: 10px 20px; }
+        #mobile { display: flex; align-items: center; }
+        #lg-bag { display: none; }
+        
+        /* Cart Layout Change: Rows become cards */
+        #cart { overflow-x: hidden; padding: 20px; }
+
+        #cart table { width: 100%; table-layout: auto; }
+        #cart table thead { display: none; } /* Hide table headers (THIS IS VITAL) */
+        
+        #cart table tbody tr {
+            display: block;
+            margin-bottom: 20px;
+            border: 1px solid #e2e9e1;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        #cart table tbody td {
+            display: flex; /* Use flex to align label and data */
+            justify-content: space-between;
+            width: 100%;
+            text-align: right;
+            padding: 5px 10px;
+            position: relative; /* Needed for :before elements */
+            border: none;
+        }
+        
+        /* Fix the overlap by restoring the :before elements and using padding: */
+        #cart table tbody td:before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+        }
+        
+        /* Specific adjustments */
+        #cart table tbody td:nth-child(1) { 
+            text-align: left; 
+            justify-content: flex-start;
+        } /* Remove button */
+        
+        #cart table tbody td:nth-child(2) { 
+            /* Image column doesn't need flex/space-between for image display */
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+        #cart table tbody td:nth-child(2):before { content: none; } /* Hide 'Image' label */
+
+        /* Fix the quantity input alignment */
+        #cart table tbody td:nth-child(5) {
+            display: flex;
+            justify-content: flex-end; /* Align Qty label and input to the right */
+            align-items: center;
+        }
+        #cart table tbody td:nth-child(5) input {
+            width: 60px;
+            margin-left: 10px;
+        }
+
+        /* Coupon and Totals stack vertically */
+        #cart-add { flex-direction: column; padding: 20px; }
+        #coupon, #subtotal { width: 100%; margin-top: 20px; }
+    }
+</style>
+</head>
+<body>
+    
+    <section id="header">
+
+        <a href="#"><img src="logo.png" alt="logo"></a>
+
+        <div>
+
+            <ul id="navbar">
+
+                <li><a href="index.html">Home</a></li>
+
+                <li><a href="shop.html">Shop</a></li>
+
+                <li><a href="blog.html">Blog</a></li>
+
+                <li><a class="active" href="about.html">About</a></li>
+
+                <li><a href="contact.html">Contact</a></li>
+
+                <li id="lg-bag"><a href="cart.html"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a></li>
+
+                <a href="#" id="close"><i class="fas fa-times"></i></a>
+
+            </ul>
+
+        </div>
+
+        <div id="mobile">
+
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping" style="color: #6d7969;"></i></a>
+
+            <i id="bar" class="fas fa-outdent"></i>
+
+        </div>
+
+    </section>
+
+    <section id="page-header" class="about-header">
+        <h2>#ShopCart</h2>
+        <p>Your latest additions!</p>
+    </section>
+
+    <section id="cart" class="section-p1">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>REMOVE</td>
+                    <td>IMAGE</td>
+                    <td>PRODUCT</td>
+                    <td>PRICE</td>
+                    <td>QUANTITY</td>
+                    <td>SUBTOTAL</td>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                </tbody>
+        </table>
+        <p id="empty-cart-message" style="text-align: center; margin-top: 50px; font-size: 18px; color: #888; display: none;">Your cart is empty. Add some items from the shop!</p>
+    </section>
+
+    <section id="cart-add" class="section-p1">
+        <div id="coupon">
+            <h3>Apply Coupon</h3>
+            <div>
+                <input type="text" placeholder="Enter Your Coupon">
+                <button>Apply</button>
+            </div>
+        </div>
+
+        <div id="subtotal">
+            <h3>Cart Totals</h3>
+            <table>
+                <tr>
+                    <td>Cart Subtotal</td>
+                    <td id="subtotal-amount">Rs. 0.00</td>
+                </tr>
+                <tr>
+                    <td>Shipping</td>
+                    <td>Free</td>
+                </tr>
+                <tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td id="total-amount"><strong>Rs. 0.00</strong></td>
+                    </tr>
+                </table>
+                <a href="billing.html"><button>Proceed to checkout</button></a>
+            </div>
+        </section>
+
+        <footer class="section-p1">
+
+        <div class="col">
+
+            <img class="loho" src="logo.png" alt="">
+
+            <h4>Contact</h4>
+
+            <p><strong>Address:</strong> Mangalore, Karnataka</p>
+
+            <p><strong>Phone:</strong> (+91) 73 3852 1960 /(+91) 94 8205 5165</p>
+
+            <p><strong>Hour:</strong> 10:00 - 18:00, Mon - Sat</p>
+
+ 
+
+            <div class="follow">
+
+                <h4>Follow us</h4>
+
+                <div class="icon">
+
+                    <i class="fab fa-facebook-f"></i>
+
+                    <i class="fab fa-twitter"></i>
+
+                    <i class="fab fa-instagram"></i>
+
+                    <i class="fab fa-pinterest-p"></i>
+
+                    <i class="fab fa-youtube"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col">
+
+            <h4>About</h4>
+
+            <a href="#">About Us</a>
+
+            <a href="#">Delivery Information</a>
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Contact Us</a>
+
+        </div>
+
+
+
+        <div class="col">
+
+            <h4>My Account</h4>
+
+            <a href="#">Sign In</a>
+
+            <a href="#">View Cart</a>
+
+            <a href="#">My Wishlist</a>
+
+            <a href="#">Track My Order</a>
+
+            <a href="#">Help</a>
+
+        </div>
+
+
+
+        <div class="col install">
+
+            <h4>Install App</h4>
+
+            <p>From App Store or Google Playstore</p>
+
+            <div class="row">
+
+                <img src="img/app.jpg" alt="">
+
+                <img src="img/play.jpg" alt="">
+
+            </div>
+
+            <p>Secured Payment Gateways</p>
+
+            <img src="img/pay.png" alt="">
+
+        </div>
+
+
+
+        <div class="copyright">
+
+            <p>&copy; 2025, Alpine Clay Co.</p>
+
+        </div>
+
+    </footer>
+
+        <script src="script.js"></script>
+        <script>
+            // --- Cart Logic from previous turns ---
+            function getCart() {
+                const cart = localStorage.getItem('shoppingCart');
+                return cart ? JSON.parse(cart) : [];
+            }
+
+            function renderCart() {
+                const cartItemsContainer = document.getElementById('cart-items');
+                const emptyMessage = document.getElementById('empty-cart-message');
+                const cartAddSection = document.getElementById('cart-add');
+                
+                let cartItems = getCart();
+                cartItemsContainer.innerHTML = '';
+                let subtotal = 0;
+
+                if (cartItems.length === 0) {
+                    emptyMessage.style.display = 'block';
+                    cartAddSection.style.display = 'none';
+                } else {
+                    emptyMessage.style.display = 'none';
+                    cartAddSection.style.display = 'flex'; 
+
+                    cartItems.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        subtotal += itemTotal;
+
+                        const newRow = document.createElement('tr');
+                        // IMPORTANT: Data labels are added here to facilitate the CSS display changes
+                        newRow.innerHTML = `
+                            <td data-label="Remove">
+                                <a href="#" onclick="window.removeItem('${item.id}'); return false;">
+                                    <i class="fa-solid fa-circle-xmark" style="color: #800000;"></i>
+                                </a>
+                            </td>
+                            <td data-label="Image"><img src="${item.image}" alt="${item.name}" style="width:70px;"></td>
+                            <td data-label="Product"> ${item.name}</td>
+                            <td data-label="Price"> Rs. ${item.price.toLocaleString()}</td>
+                            <td data-label="Quantity">
+                                <span>Qty:</span>
+                                <input 
+                                    type="number" 
+                                    value="${item.quantity}" 
+                                    min="1" 
+                                    onchange="window.updateQuantity('${item.id}', this.value)"
+                                >
+                            </td>
+                            <td data-label="Subtotal"><span>Subtotal:</span> Rs. ${itemTotal.toLocaleString()}</td>
+                        `;
+                        cartItemsContainer.appendChild(newRow);
+                    });
+                }
+
+                document.getElementById('subtotal-amount').innerText = `Rs. ${subtotal.toLocaleString()}`;
+                document.getElementById('total-amount').innerText = `Rs. ${subtotal.toLocaleString()}`;
+            }
+            
+            // --- Event Listeners and other functions (getCart, updateQuantity, removeItem, etc. from script.js) ---
+            document.getElementById('cart-items').addEventListener('cartUpdate', renderCart);
+            document.addEventListener('DOMContentLoaded', renderCart);
+            
+            // Newsletter function...
+            document.getElementById('newsletter-submit').addEventListener('click', function(e) {
+                e.preventDefault();
+                const emailInput = document.getElementById('newsletter-email');
+                if (emailInput.value && emailInput.checkValidity()) {
+                    alert("Thank you for submitting");
+                    emailInput.value = '';
+                } else {
+                    alert("Please enter a valid email address.");
+                }
+            });
+        </script>
+    </body>
+    </html>
